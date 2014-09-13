@@ -8,32 +8,38 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 using System;
-using UnityEngine;
-
 namespace Attacks
 {
-	public class YouAreUnderArrest : StellarDrive
+	public class DownBoy : StellarDrive
 	{
-		public YouAreUnderArrest ()
+		public DownBoy ()
 		{
 			frames = 100;
+
+			commands.Add ("236236C");
+			commands.Add ("236236D");
+			commands.Add ("214214C");
+			commands.Add ("214214D");
 		}
-		
+
 		override protected void attack (PlayerController player, PlayerController enemy)
 		{
-			if( player.facingLeft == false )
-			{
-				player.rigidbody2D.AddForce ( new Vector2 ( 30 , 0 ) );
-			}
-			else
-			{
-				player.rigidbody2D.AddForce ( new Vector2 ( -30 , 0 ) );
-			}
-			
 			if( frames % 10 == 0 )
 			{
-				enemy.amIgettingHitYAUA( 200, 0, 20, 2 );
+				//flipDamage is used here so the target is bounced back and forth
+				//within the whip zone
+				if( player.flipDamage == false )
+				{
+					enemy.amIgettingHitDownBoy( 200, 0, 20, 2 );
+					player.flipDamage = true;
+				}
+				else
+				{
+					enemy.amIgettingHitDownBoy( -200, 0, 20, 2 );
+					player.flipDamage = false;
+				}
 			}
 		}
 	}
 }
+

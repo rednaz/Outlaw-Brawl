@@ -8,16 +8,19 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 using System;
+using System.Collections.Generic;
+using System.Linq;
 namespace Attacks
 {
 	public abstract class StellarDrive
 	{
 		protected int frames;
+		protected List<string> commands;
 		protected bool isAttacking = false;
 
-		public void attemptAttack (int currentFrames, PlayerController player, PlayerController enemy)
+		public bool attemptAttack (int currentFrames, string command, PlayerController player, PlayerController enemy)
 		{
-			if (!isAttacking && canAttack (currentFrames))
+			if (!isAttacking && canAttack (currentFrames, command))
 			{
 				isAttacking = true;
 				PlaySound();
@@ -29,10 +32,15 @@ namespace Attacks
 				if (endAttack (currentFrames))
 					isAttacking = false;
 			}
+
+			return isAttacking;
 		}
-		
-		protected bool canAttack (int currentFrames)
+
+		protected bool canAttack (int currentFrames, string command)
 		{
+			if (commands.All(c => !Equals (c, command)))
+				return false;
+
 			return currentFrames >= frames;
 		}
 		
@@ -46,6 +54,6 @@ namespace Attacks
 
 		}
 
-		void attack (PlayerController player, PlayerController enemy);
+		abstract protected void attack (PlayerController player, PlayerController enemy);
 	}
 }
